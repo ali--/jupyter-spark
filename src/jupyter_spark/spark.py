@@ -45,7 +45,10 @@ class Spark(LoggingConfigurable):
 
     def backend_url(self, request):
         request_path = request.uri[len(self.proxy_url):]
-        return url_path_join(self.url, request_path)
+        if not request_path and 'X-Original-Uri' in request.headers:
+            request_path = request.headers['X-Original-Uri'].split('spark')[1]
+        new_url = url_path_join(self.url, request_path)
+        return new_url
 
     def replace(self, content):
         """
@@ -65,5 +68,5 @@ class Spark(LoggingConfigurable):
                 match = PROXY_PATH_RE.match(value)
                 if match is not None:
                     value = match.groups()[0]
-                tag[attribute] = url_path_join(self.proxy_root, value)
+                tag[attribute] = url_path_join(self.proxy_url, value)
         return str(soup)

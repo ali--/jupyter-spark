@@ -11,6 +11,7 @@ class SparkHandler(IPythonHandler):
         self.spark = spark
 
     @tornado.web.asynchronous
+    @tornado.web.authenticated
     def get(self):
         """
         Fetch the requested URI from the Spark API, replace the
@@ -19,7 +20,7 @@ class SparkHandler(IPythonHandler):
         """
         http = httpclient.AsyncHTTPClient()
         url = self.spark.backend_url(self.request)
-        self.spark.log.debug('Fetching from Spark %s', url)
+        self.spark.log.info('Fetching from Spark {} as user {}'.format(url,self.get_current_user()))
         http.fetch(url, self.handle_response)
 
     def handle_response(self, response):
