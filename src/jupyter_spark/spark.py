@@ -46,7 +46,7 @@ class Spark(LoggingConfigurable):
     def backend_url(self, request):
         request_path = request.uri[len(self.proxy_url):]
         if not request_path and 'X-Original-Uri' in request.headers:
-            request_path = request.headers['X-Original-Uri'].split('spark')[1]
+            request_path = request.headers['X-Original-Uri'].split('/spark')[1]
         new_url = url_path_join(self.url, request_path)
         return new_url
 
