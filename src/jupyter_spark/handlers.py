@@ -20,7 +20,7 @@ class SparkHandler(IPythonHandler):
         """
         http = httpclient.AsyncHTTPClient()
         url = self.spark.backend_url(self.request)
-        self.spark.log.info('Fetching from Spark {} as user {}'.format(url,self.get_current_user()))
+        self.spark.log.debug('Fetching from Spark {} as user {}'.format(url,self.get_current_user()))
         http.fetch(url, self.handle_response)
 
     def handle_response(self, response):
