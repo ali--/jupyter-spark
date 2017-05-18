@@ -150,7 +150,7 @@ define([
 ], function ($, dialog, events, utils, codecell) {
     var CodeCell = codecell.CodeCell;
     var base_url = utils.get_body_data('baseUrl') || '/';
-    var api_url = base_url + 'spark/api/v1';
+    var api_url = base_url + 'proxy/4040/api/v1';
 
     var show_running_jobs = function() {
         var element = $('<div/>').attr('id', 'dialog_contents');

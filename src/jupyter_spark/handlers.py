@@ -24,13 +24,18 @@ class SparkHandler(IPythonHandler):
         http.fetch(url, self.handle_response)
 
     def handle_response(self, response):
+        path = response.request.url[len(self.spark.url)+1:] # everything after the colon
+        port = path
+        if '/' in path:
+            port = path[:path.index('/')]
+
         if response.error:
             content_type = 'application/json'
             content = json.dumps({'error': 'SPARK_NOT_RUNNING'})
         else:
             content_type = response.headers['Content-Type']
             if 'text/html' in content_type:
-                content = self.spark.replace(response.body)
+                content = self.spark.replace(response.body,port)
             else:
                 # Probably binary response, send it directly.
                 content = response.body
